@@ -4,13 +4,13 @@ A library of black-box (zeroth-order) optimization algorithms with a unified
 `ask()`/`tell()` interface, plus a benchmark harness comparing them on three
 axes:
 
-- **Energy efficiency** -- evaluations needed to reach a target fitness.
+- **Energy efficiency**   evaluations needed to reach a target fitness.
   Physical/non-digital hardware forward-passes are the expensive, slow
   resource in this project, so evaluation count is used as the energy proxy
   throughout.
-- **Complexity** -- documented Big-O per algorithm (memory and per-step cost)
+- **Complexity**   documented Big-O per algorithm (memory and per-step cost)
   plus empirically measured wall-clock scaling with problem dimension.
-- **Convergence performance** -- best-fitness-vs-evaluations curves, averaged
+- **Convergence performance**   best-fitness-vs-evaluations curves, averaged
   over multiple random seeds.
 
 ## Why a unified interface
@@ -33,13 +33,13 @@ of being tracked separately per algorithm.
 ## Algorithms
 
 | Algorithm | File | Evals/step | Notes |
-|---|---|---|---|
+| -| -| -| -|
 | CMA-ES | `optimizers/cma_es.py` | population | Full covariance adaptation; O(n²) memory, periodic O(n³) eigendecomposition |
 | PSO | `optimizers/pso.py` | population | Velocity + inertia, boundary reflection |
-| PEPG | `optimizers/pepg.py` | population | Antithetic sampling, diagonal covariance only -- avoids CMA-ES's cubic cost |
+| PEPG | `optimizers/pepg.py` | population | Antithetic sampling, diagonal covariance only   avoids CMA-ES's cubic cost |
 | Genetic Algorithm | `optimizers/genetic_algorithm.py` | population | Tournament selection, blend crossover, Gaussian mutation |
 | SPSA | `optimizers/spsa.py` | 2 (constant) | Cheapest per-step energy cost regardless of `n_dim` |
-| Finite-difference gradient | `optimizers/finite_difference.py` | `2*n_perturb` | Cost scales with dimension when `n_perturb ≈ n_dim` -- the energy-inefficient baseline |
+| Finite-difference gradient | `optimizers/finite_difference.py` | `2*n_perturb` | Cost scales with dimension when `n_perturb ≈ n_dim`   the energy-inefficient baseline |
 | Simulated Annealing | `optimizers/simulated_annealing.py` | 1 | Metropolis acceptance, geometric cooling |
 | Nelder-Mead | `optimizers/nelder_mead.py` | 1-2 | Sequential simplex; no gradient or population, poor high-dimensional scaling |
 
@@ -49,21 +49,21 @@ rather than ported from any single source, so the interface could be made
 consistent across all eight algorithms.
 
 **Not included:** ADAM. It requires true gradients (backprop), which isn't
-available in a black-box/hardware-in-the-loop setting -- out of scope for
+available in a black-box/hardware-in-the-loop setting   out of scope for
 this library by design, not an oversight.
 
 ## Benchmark harness
 
-- `experiments/objective_functions.py` -- Sphere (convex), Rastrigin
+- `experiments/objective_functions.py`   Sphere (convex), Rastrigin
   (multimodal), Rosenbrock (curved valley), Ackley (flat outer region, sharp
   central well).
-- `experiments/runner.py` -- runs one (optimizer, objective, dimension, seed)
+- `experiments/runner.py`   runs one (optimizer, objective, dimension, seed)
   trial to a fixed evaluation budget, recording evaluations / best-fitness /
   wall-time at every step.
-- `experiments/metrics.py` -- energy (evaluations-to-target, success rate),
+- `experiments/metrics.py`   energy (evaluations-to-target, success rate),
   convergence curves (mean/std over trials), complexity scaling (time per
   evaluation vs. dimension).
-- `experiments/report.py` -- renders the plots and summary CSV under
+- `experiments/report.py`   renders the plots and summary CSV under
   `results/`.
 
 ## Usage
@@ -74,21 +74,21 @@ pytest tests/                       # unit tests: ask/tell shapes + sphere conve
 python scripts/run_benchmark.py     # full suite -> results/*.png, results/summary.csv
 ```
 
-Options: `--trials`, `--max-evaluations`, `--dims`, `--output-dir` (see
-`python scripts/run_benchmark.py --help`).
+Options: ` trials`, ` max-evaluations`, ` dims`, ` output-dir` (see
+`python scripts/run_benchmark.py  help`).
 
 ## Results
 
 `results/` contains one committed snapshot from an actual local run (8
 algorithms x 4 objectives x dims {5, 20, 50} x 5 seeds each):
 
-- `convergence_<objective>_<dim>d.png` -- best-fitness-vs-evaluations per
+- `convergence_<objective>_<dim>d.png`   best-fitness-vs-evaluations per
   objective/dimension, one line per algorithm.
-- `evals_to_target.png` -- mean evaluations-to-target per algorithm/objective
+- `evals_to_target.png`   mean evaluations-to-target per algorithm/objective
   (the energy efficiency comparison).
-- `complexity_scaling.png` -- mean wall-clock time per evaluation vs. `n_dim`
+- `complexity_scaling.png`   mean wall-clock time per evaluation vs. `n_dim`
   per algorithm (empirical complexity).
-- `summary.csv` -- the underlying numbers for both plots.
+- `summary.csv`   the underlying numbers for both plots.
 
 Re-run `scripts/run_benchmark.py` to regenerate against different budgets,
 dimensions, or objective functions (e.g. a physical-hardware forward pass
