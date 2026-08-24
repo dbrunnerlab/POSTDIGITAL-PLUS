@@ -18,3 +18,10 @@ non-digital computing systems.
   - `PNN-comparison-database/` results database for comparing
     optimization algorithms on physical neural network hardware.
   - `data-sets/` datasets used across benchmarking experiments.
+
+## Credits
+
+The optimizer library in `training-algorithms/` was inspired by
+[ASkalli/learning_strategies](https://github.com/ASkalli/learning_strategies)
+and its associated paper (arXiv:2503.16943); see that folder's
+[README](training-algorithms/README.md#credits) for details.
